@@ -1,4 +1,4 @@
-import { AuthCredentials, AuthUser } from "../types";
+import { AuthCredentials, AuthUser, RegisterData } from "../types";
 
 export const authService = {
     /**
@@ -21,5 +21,23 @@ export const authService = {
         }
 
         return null;
+    },
+
+    /**
+     * Registra um novo usuário
+     * @param data
+     */
+    async registerUser(data: RegisterData): Promise<AuthUser | null> {
+        if (data.email === "admin@hackcoda.com") {
+            return null;
+        }
+
+        const newUser: AuthUser = {
+            id: Date.now().toString(),
+            name: data.name,
+            email: data.email,
+            role: "USER"
+        };
+        return newUser;
     }
 };

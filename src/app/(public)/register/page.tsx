@@ -1,26 +1,36 @@
 "use client";
-import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function LoginPage() {
+export default function RegisterPage() {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter();
 
-    const handleLogin = async (e: React.FormEvent) => {
+    const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
-        const result = await signIn("credentials", {
-            email,
-            password,
-            redirect: false,
-        });
+        
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, email, password }),
+            });
 
-        if (!result?.error) {
-            router.push("/dashboard");
-            router.refresh();
-        } else {
-            alert("Erro ao logar! Verifique suas credenciais.");
+            if (response.ok) {
+                alert("Conta criada com sucesso! Faça login para continuar.");
+                router.push("/login");
+                router.refresh();
+            } else {
+                const errorData = await response.json();
+                alert(`Erro no registro: ${errorData.message || 'Tente novamente.'}`);
+            }
+        } catch (error) {
+            console.error('Erro ao registrar:', error);
+            alert('Erro interno. Tente novamente.');
         }
     };
 
@@ -45,17 +55,17 @@ export default function LoginPage() {
                             Inscrições Abertas
                         </div>
                         <h1 className="text-7xl font-black leading-none tracking-tighter text-white">
-                            Minds <br />
-                            <span className="text-brasil-preto">cearenses.</span>
+                            Junte-se a <br />
+                            <span className="text-brasil-preto">nós.</span>
                         </h1>
                         <p className="text-white/90 text-xl max-w-md font-medium leading-relaxed">
-                            A plataforma para a maior comunidade tech do Ceará.
+                            Crie sua conta e conecte-se com as mentes tech mais brilhantes do Ceará.
                         </p>
                     </div>
 
                     <div className="relative z-10">
                         <p className="text-sm font-bold uppercase tracking-widest text-brasil-preto/60">
-                            © {new Date().getFullYear()} Hackathon. Todos os direitos reservados
+                            © {new Date().getFullYear()} Hackathon. Todos os direitos reservados.
                         </p>
                     </div>
                 </div>
@@ -69,14 +79,27 @@ export default function LoginPage() {
 
                     <div className="mb-12 space-y-3">
                         <h2 className="text-5xl font-black tracking-tighter text-brasil-creme">
-                            Login
+                            Criar Conta
                         </h2>
                         <p className="text-lg text-zinc-400">
-                            Acesse a plataforma para gerenciar seus projetos e times.
+                            Preencha seus dados para fazer parte da comunidade.
                         </p>
                     </div>
 
-                    <form onSubmit={handleLogin} className="space-y-8">
+                    <form onSubmit={handleRegister} className="space-y-6">
+                        <div className="space-y-2 group">
+                            <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 ml-1 group-focus-within:text-brasil-verde transition-colors duration-300">
+                                Nome Completo
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="Seu nome"
+                                className="w-full p-4 bg-brasil-preto/50 border border-white/10 rounded-2xl text-brasil-creme placeholder:text-zinc-700 focus:ring-2 focus:ring-brasil-verde focus:border-transparent focus:shadow-[0_0_15px_rgba(93,214,44,0.3)] outline-none transition-all duration-300 backdrop-blur-sm"
+                                onChange={(e) => setName(e.target.value)}
+                                required
+                            />
+                        </div>
+
                         <div className="space-y-2 group">
                             <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 ml-1 group-focus-within:text-brasil-verde transition-colors duration-300">
                                 E-mail
@@ -95,9 +118,6 @@ export default function LoginPage() {
                                 <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 group-focus-within:text-brasil-verde transition-colors duration-300">
                                     Senha
                                 </label>
-                                <a href="#" className="text-xs font-bold text-brasil-verde hover:underline uppercase tracking-widest">
-                                    Esqueceu?
-                                </a>
                             </div>
                             <input
                                 type="password"
@@ -105,21 +125,22 @@ export default function LoginPage() {
                                 className="w-full p-4 bg-brasil-preto/50 border border-white/10 rounded-2xl text-brasil-creme placeholder:text-zinc-700 focus:ring-2 focus:ring-brasil-verde focus:border-transparent focus:shadow-[0_0_15px_rgba(93,214,44,0.3)] outline-none transition-all duration-300 backdrop-blur-sm"
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
+                                minLength={6}
                             />
                         </div>
 
                         <button
                             type="submit"
-                            className="w-full bg-gradient-to-r from-brasil-verde to-brasil-verdeEscuro text-brasil-preto font-black text-lg py-5 rounded-2xl hover:opacity-100 hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(93,214,44,0.2)] hover:shadow-[0_0_30px_rgba(93,214,44,0.6)] active:scale-95"
+                            className="w-full bg-gradient-to-r from-brasil-verde to-brasil-verdeEscuro text-brasil-preto font-black text-lg py-5 rounded-2xl hover:opacity-100 hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(93,214,44,0.2)] hover:shadow-[0_0_30px_rgba(93,214,44,0.6)] active:scale-95 mt-4"
                         >
-                            Entrar no HackCoda
+                            Criar Minha Conta
                         </button>
                     </form>
 
                     <div className="mt-16 text-center text-sm font-medium text-zinc-500">
-                        Ainda não faz parte?{' '}
-                        <a href="/register" className="font-bold text-brasil-verde hover:underline uppercase tracking-tighter">
-                            Crie sua conta
+                        Já tem uma conta?{' '}
+                        <a href="/login" className="font-bold text-brasil-verde hover:underline uppercase tracking-tighter">
+                            Acesse Agora
                         </a>
                     </div>
                 </div>
