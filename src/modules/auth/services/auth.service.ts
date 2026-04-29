@@ -1,4 +1,6 @@
 import { AuthCredentials, AuthUser, RegisterData } from "../types";
+import { prisma } from "@/shared/lib/prisma";
+import bcrypt from "bcryptjs";
 
 export const authService = {
     /**
@@ -6,18 +8,23 @@ export const authService = {
      * @param credentials - Objeto com email e password
      */
     async validateUser(credentials: AuthCredentials): Promise<AuthUser | null> {
+        const user = await prisma.user.findUnique({
+            where: { email: credentials.email }
+        });
 
-        const mockUser: AuthUser = {
-            id: "1",
-            email: "admin@hackcoda.com",
-            name: "Admin HackCoda",
-            role: "ADMIN"
-        };
+        if (!user || !user.password) {
+            return null;
+        }
 
-        const isPasswordValid = credentials.password === "123456";
+        const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
 
-        if (credentials.email === mockUser.email && isPasswordValid) {
-            return mockUser;
+        if (isPasswordValid) {
+            return {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                role: user.role
+            };
         }
 
         return null;
@@ -28,16 +35,30 @@ export const authService = {
      * @param data
      */
     async registerUser(data: RegisterData): Promise<AuthUser | null> {
-        if (data.email === "admin@hackcoda.com") {
+        const existingUser = await prisma.user.findUnique({
+            where: { email: data.email }
+        });
+
+        if (existingUser) {
             return null;
         }
 
-        const newUser: AuthUser = {
-            id: Date.now().toString(),
-            name: data.name,
-            email: data.email,
-            role: "USER"
+        const hashedPassword = await bcrypt.hash(data.password, 10);
+
+        const newUser = await prisma.user.create({
+            data: {
+                name: data.name,
+                email: data.email,
+                password: hashedPassword,
+                role: "USER" // Default role
+            }
+        });
+
+        return {
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email,
+            role: newUser.role
         };
-        return newUser;
     }
 };
