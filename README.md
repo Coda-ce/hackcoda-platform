@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# hackcoda
 
-## Getting Started
+O hackcoda é um projeto open-source desenvolvido pela comunidade Coda.ce com o objetivo de centralizar a gestão de hackathons: inscrição de times, submissão de projetos e divulgação de resultados.
 
-First, run the development server:
+O projeto utiliza Next.js como solução fullstack — frontend, backend e API em um único repositório, com um único deploy.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Visão Geral
+
+- Status: Em planejamento (MVP)
+- Tipo: Open-Source (Web)
+- Stack: Next.js 14 Fullstack (monolito modular)
+- Licença: MIT
+
+## Objetivos Estratégicos
+
+- Criar uma plataforma web completa para gestão de hackathons da comunidade Coda.ce.
+- Ser open-source e aceitar contribuições de membros com qualquer nível de experiência.
+- Integrar-se com as ferramentas já existentes da comunidade (bilheteria, site).
+- Servir como projeto vitrine da Coda.ce no GitHub.
+- Manter uma arquitetura modular que qualquer desenvolvedor Next.js consiga entender e contribuir.
+
+## Arquitetura Funcional (Módulos)
+
+O sistema é estruturado em módulos independentes dentro do diretório src/modules:
+
+- Módulo de Autenticação (NextAuth): Registro, Login, Sessão e Controle de acesso por role.
+- Módulo de Hackathons: CRUD de hackathon, alteração de status, página pública e countdown.
+- Módulo de Times: Criar time, gerenciar membros, convites e inscrição.
+- Módulo de Projetos: Submissão, upload de screenshot e vitrine pública.
+- Módulo de Ranking: Definição de vencedores e resultados.
+- Módulo Administrativo: Gestão do ciclo de vida do evento.
+
+## Estrutura de Pastas
+
+O projeto segue uma estrutura de monolito modular para facilitar a manutenção e escalabilidade:
+
+```text
+src/
+├── app/              # Rotas e Páginas (Next.js App Router)
+├── core/             # Configurações globais e integrações (Auth, DB)
+├── modules/          # Módulos de negócio independentes
+│   ├── auth/         # Lógica de autenticação e usuários
+│   ├── hackathons/   # Gestão de eventos e ciclos de vida
+│   ├── teams/        # Gestão de times e membros
+│   ├── projects/     # Submissões e vitrine de projetos
+│   └── ranking/      # Resultados e classificações
+├── shared/           # Recursos compartilhados entre módulos
+│   ├── components/   # Componentes de UI genéricos
+│   ├── exceptions/   # Classes de erro customizadas
+│   └── validators/   # Schemas de validação globais
+└── prisma/           # Schema do banco de dados e migrações
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## MVP - Produto Mínimo Viável
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Fluxos do Sistema
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Usuário: Cadastro -> Cria ou entra em um time -> Se inscreve no hackathon -> Desenvolve -> Submete -> Aguarda resultado.
+- Admin: Cria hackathon -> Acompanha inscrições -> Encerra submissões -> Define vencedores -> Publica resultado (Ranking).
 
-## Learn More
+### Regras de Negócio principais
 
-To learn more about Next.js, take a look at the following resources:
+- Um usuário só pode estar em um time por hackathon.
+- Apenas o líder do time pode submeter o projeto.
+- Submissão só é permitida enquanto o hackathon está com status 'IN_PROGRESS'.
+- Cada time pode submeter apenas um projeto por hackathon.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Stack Tecnológica
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Framework: Next.js 14 (App Router)
+- Linguagem: TypeScript
+- Estilização: Tailwind CSS
+- ORM: Prisma (PostgreSQL)
+- Autenticação: NextAuth.js
+- Animações: Framer Motion
+- UI Components: Radix UI / Lucide React
 
-## Deploy on Vercel
+## Como Começar
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Pré-requisitos
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Node.js (v18+)
+- Banco de dados Postgres 
+
+### Instalação
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/codace/hackcoda-platform.git
+   ```
+
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
+
+3. Configure o ambiente:
+   Copie o arquivo .env.example para .env e preencha as variáveis necessárias.
+
+4. Prepare o banco de dados:
+   ```bash
+   npx prisma migrate dev
+   ```
+
+5. Inicie o projeto:
+   ```bash
+   npm run dev
+   ```
+
+## Contribuição
+
+Consulte o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para entender como você pode ajudar no desenvolvimento do hackcoda.
+
+## Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
