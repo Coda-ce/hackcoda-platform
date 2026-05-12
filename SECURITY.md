@@ -6,7 +6,7 @@ Levamos a segurança do Hackcoda Platform a sério. Se você acredita ter encont
 
 ## Versões Suportadas
 
-Atualmente, apenas a versão mais recente na branch `main` recebe atualizações de segurança. Recomendamos sempre utilizar a versão mais recente do código.
+Atualmente, apenas a versão mais recente na branch `developer` recebe atualizações de segurança. Recomendamos sempre utilizar a versão mais recente do código.
 
 | Versão | Suportada |
 | ------- | --------- |

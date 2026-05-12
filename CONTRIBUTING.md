@@ -7,11 +7,11 @@ O hackcoda é um projeto comunitário da Coda.ce e sua ajuda é fundamental. Ace
 ### Processo de Pull Request
 
 1. Faça o fork do repositório.
-2. Crie uma branch para sua funcionalidade ou correção: `git checkout -b feature/nome-da-feature`.
+2. Crie uma branch para sua funcionalidade ou correção a partir da branch `developer`: `git checkout developer && git pull origin developer && git checkout -b feature/nome-da-feature`.
 3. Certifique-se de seguir os padrões de código do projeto (Linting e TypeScript).
 4. Faça o commit de suas alterações: `git commit -m "feat: descrição da alteração"`.
 5. Envie para o seu fork: `git push origin feature/nome-da-feature`.
-6. Abra um Pull Request detalhando o que foi feito.
+6. Abra um Pull Request detalhando o que foi feito, direcionando-o obrigatoriamente para a branch `developer` (e não para a `main`).
 
 **Importante:** Assim que o seu Pull Request for aprovado e mesclado (merged), por favor, exclua a sua branch local e remota para manter o repositório organizado.
 
