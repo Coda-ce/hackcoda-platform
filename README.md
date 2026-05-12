@@ -80,9 +80,41 @@ src/
 ### Pré-requisitos
 
 - Node.js (v18+)
-- Banco de dados Postgres 
+- Banco de dados PostgreSQL
 
-### Instalação
+### Subindo o banco com Docker (recomendado para desenvolvimento local)
+
+Se preferir não instalar o PostgreSQL manualmente, o projeto inclui um `docker-compose.yml` que sobe o banco e executa as migrações automaticamente.
+
+**Pré-requisito:** [Docker](https://www.docker.com/) instalado.
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/codace/hackcoda-platform.git
+   ```
+
+2. Configure o ambiente:
+   Copie o arquivo `.env.example` para `.env`. A `DATABASE_URL` padrão já está configurada para o banco do Docker:
+   ```
+   DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/hackcoda?schema=public"
+   ```
+
+3. Suba o banco e execute as migrações:
+   ```bash
+   docker-compose up -d
+   ```
+   O serviço `migrate` roda `prisma migrate deploy` automaticamente assim que o banco estiver pronto e encerra em seguida.
+
+4. Instale as dependências e inicie o projeto:
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+Para parar os containers: `docker-compose down`
+Para remover os dados do banco junto: `docker-compose down -v`
+
+### Instalação manual (sem Docker)
 
 1. Clone o repositório:
    ```bash
@@ -95,7 +127,7 @@ src/
    ```
 
 3. Configure o ambiente:
-   Copie o arquivo .env.example para .env e preencha as variáveis necessárias.
+   Copie o arquivo `.env.example` para `.env` e preencha as variáveis com os dados do seu banco.
 
 4. Prepare o banco de dados:
    ```bash
@@ -109,7 +141,7 @@ src/
 
 ## Contribuição
 
-Consulte o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para entender como você pode ajudar no desenvolvimento do hackcoda.
+Consulte o arquivo [CONTRIBUTING.md](.github/CONTRIBUTING.md) para entender como você pode ajudar no desenvolvimento do hackcoda.
 
 ## Licença
 
