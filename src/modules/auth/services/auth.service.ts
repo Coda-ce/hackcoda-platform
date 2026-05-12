@@ -1,5 +1,6 @@
 import { AuthCredentials, AuthUser, RegisterData } from "../types";
 import { prisma } from "@/shared/lib/prisma";
+import { ResourceExistsException } from "@/shared/exceptions/resource-exists";
 import bcrypt from "bcryptjs";
 
 export const authService = {
@@ -40,7 +41,7 @@ export const authService = {
         });
 
         if (existingUser) {
-            return null;
+            throw new ResourceExistsException("email");
         }
 
         const hashedPassword = await bcrypt.hash(data.password, 10);

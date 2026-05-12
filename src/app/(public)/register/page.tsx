@@ -21,6 +21,7 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 export default function RegisterPage() {
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState("");
+  const [emailTaken, setEmailTaken] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
   const {
@@ -33,6 +34,7 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormValues) => {
     setErrorMsg("");
+    setEmailTaken(false);
     try {
       const response = await fetch('/api/auth/register', {
         method: 'POST',
@@ -45,9 +47,11 @@ export default function RegisterPage() {
       if (response.ok) {
         router.push("/login?registered=true");
         router.refresh();
+      } else if (response.status === 409) {
+        setEmailTaken(true);
       } else {
         const errorData = await response.json();
-        setErrorMsg(`Erro: ${errorData.message || 'Falha ao registrar.'}`);
+        setErrorMsg(errorData.message || 'Falha ao registrar.');
       }
     } catch (error) {
       console.error('Erro ao registrar:', error);
@@ -129,6 +133,20 @@ export default function RegisterPage() {
                 </p>
               )}
             </div>
+
+            {emailTaken && (
+              <div className="p-3 bg-amber-900/30 border border-amber-500/50 rounded-xl flex items-center justify-between gap-3">
+                <p className="text-amber-300 text-sm font-medium">
+                  Este e-mail já possui uma conta.
+                </p>
+                <a
+                  href="/login"
+                  className="text-brasil-verde text-sm font-semibold hover:text-[#4bcc25] whitespace-nowrap transition-colors"
+                >
+                  Fazer login →
+                </a>
+              </div>
+            )}
 
             {errorMsg && (
               <div className="p-3 bg-red-900/30 border border-red-500/50 text-red-400 text-sm font-medium rounded-xl">
