@@ -23,7 +23,7 @@ export function MatrixBackground() {
 
     for (let x = 0; x < columns; x++) {
       // Começar os drops espalhados por toda a altura da tela imediatamente!
-      drops[x] = Math.random() * (canvas.height / fontSize); 
+      drops[x] = Math.random() * (canvas.height / fontSize);
     }
 
     const draw = () => {
@@ -35,7 +35,9 @@ export function MatrixBackground() {
       ctx.font = fontSize + "px monospace";
 
       for (let i = 0; i < drops.length; i++) {
-        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+        const text = alphabet.charAt(
+          Math.floor(Math.random() * alphabet.length),
+        );
         const x = i * fontSize;
         const y = drops[i] * fontSize;
 
@@ -55,9 +57,9 @@ export function MatrixBackground() {
       if (!canvas) return;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      
+
       const newColumns = Math.floor(canvas.width / fontSize) + 1;
-      
+
       // Se a tela aumentar, adiciona novos drops espalhados
       if (newColumns > drops.length) {
         for (let x = drops.length; x < newColumns; x++) {

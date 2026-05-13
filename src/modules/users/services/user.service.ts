@@ -1,13 +1,17 @@
+import { Prisma } from "@prisma/client";
+import bcrypt from "bcryptjs";
 import { ResourceNotFoundException } from "@/shared/exceptions/resouce-not-found";
 import { ResourceExistsException } from "@/shared/exceptions/resource-exists";
 import { UserRepository } from "../repositories/user.repository";
-import { Prisma } from "@prisma/client";
-import bcrypt from "bcryptjs";
 
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async registerUser({ name, email, password }: Prisma.UserCreateInput): Promise<void> {
+  async registerUser({
+    name,
+    email,
+    password,
+  }: Prisma.UserCreateInput): Promise<void> {
     const existingUser = await this.userRepository.findByEmail(email);
 
     if (existingUser) {

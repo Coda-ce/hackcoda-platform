@@ -1,15 +1,22 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/shared/components/ui/Card";
-import { Input } from "@/shared/components/ui/Input";
 import { Button } from "@/shared/components/ui/Button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/Card";
+import { Input } from "@/shared/components/ui/Input";
 
 const loginSchema = z.object({
   email: z.string().email("E-mail inválido"),
@@ -22,7 +29,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const {
     register,
     handleSubmit,
@@ -86,7 +93,10 @@ export default function LoginPage() {
                 <label className="text-sm font-medium text-zinc-300">
                   Senha
                 </label>
-                <a href="#" className="text-xs font-medium text-brasil-verde hover:text-[#4bcc25] transition-colors">
+                <a
+                  href="#"
+                  className="text-xs font-medium text-brasil-verde hover:text-[#4bcc25] transition-colors"
+                >
                   Esqueceu a senha?
                 </a>
               </div>

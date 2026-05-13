@@ -1,8 +1,17 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
+import {
+  Code,
+  LayoutDashboard,
+  LogOut,
+  Terminal,
+  Trophy,
+  User,
+  Users,
+} from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Terminal, Users, LayoutDashboard, LogOut, Code, User, Trophy } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import { Button } from "@/shared/components/ui/Button";
 
 export default function DashboardLayout({
@@ -16,7 +25,9 @@ export default function DashboardLayout({
   if (status === "loading") {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <span className="text-brasil-verde font-mono animate-pulse">CARREGANDO_SISTEMA...</span>
+        <span className="text-brasil-verde font-mono animate-pulse">
+          CARREGANDO_SISTEMA...
+        </span>
       </div>
     );
   }
@@ -71,26 +82,28 @@ export default function DashboardLayout({
                 {session?.user?.email}
               </p>
             </div>
-            
+
             <div className="flex items-center gap-3 ml-1">
-              <button 
-                onClick={() => router.push('/dashboard/profile')}
+              <button
+                onClick={() => router.push("/dashboard/profile")}
                 className="w-10 h-10 rounded-full border-2 border-brasil-verde overflow-hidden hover:scale-105 hover:border-brasil-verdeClaro transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brasil-verde focus:ring-offset-2 focus:ring-offset-brasil-preto flex-shrink-0 flex items-center justify-center bg-brasil-cinza/50"
                 title="Meu Perfil"
               >
                 {session?.user?.image ? (
-                  <img 
-                    src={session?.user?.image} 
-                    alt="Foto de Perfil" 
+                  <Image
+                    src={session.user.image}
+                    alt="Foto de Perfil"
+                    width={40}
+                    height={40}
                     className="w-full h-full object-cover"
                   />
                 ) : (
                   <User className="h-5 w-5 text-brasil-verde" />
                 )}
               </button>
-              
+
               <div className="w-px h-6 bg-brasil-verde/20"></div>
-              
+
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
                 className="text-gray-500 hover:text-gray-300 transition-colors duration-200 focus:outline-none p-1 flex-shrink-0"

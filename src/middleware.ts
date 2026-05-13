@@ -1,5 +1,5 @@
-import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
+import { withAuth } from "next-auth/middleware";
 
 export default withAuth(
   function middleware(req) {
@@ -25,7 +25,7 @@ export default withAuth(
         from += req.nextUrl.search;
       }
       return NextResponse.redirect(
-        new URL(`/login?from=${encodeURIComponent(from)}`, req.url)
+        new URL(`/login?from=${encodeURIComponent(from)}`, req.url),
       );
     }
 
@@ -42,15 +42,15 @@ export default withAuth(
         const isAuthPage =
           req.nextUrl.pathname.startsWith("/login") ||
           req.nextUrl.pathname.startsWith("/register");
-        
+
         // Permite acesso público a login/register e arquivos estáticos
         if (isAuthPage) return true;
-        
+
         // Exige autenticação para o resto (incluindo dashboard e adm)
         return !!token;
       },
     },
-  }
+  },
 );
 
 export const config = {
