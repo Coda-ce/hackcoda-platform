@@ -12,6 +12,11 @@ enum Role {
   ADMIN
 }
 
+enum TeamMemberRole {
+  LEADER
+  MEMBER
+}
+
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
@@ -22,5 +27,35 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  teams   UserTeam[]
+  leadingTeams Team[] @relation("TeamLeader")
+
   @@map("users")
+}
+
+model Team {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  leaderId    String
+  leader      User     @relation("TeamLeader", fields: [leaderId], references: [id])
+  members     UserTeam[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("teams")
+}
+
+model UserTeam {
+  id        String   @id @default(uuid())
+  userId    String
+  teamId    String
+  role      TeamMemberRole @default(MEMBER)
+  joinedAt  DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teamId])
+  @@map("user_teams")
 }

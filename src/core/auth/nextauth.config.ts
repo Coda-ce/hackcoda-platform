@@ -28,12 +28,18 @@ export const authOptions: NextAuthOptions = {
         signIn: '/login',
     },
     callbacks: {
-        async jwt({ token, user }) {
-            if (user) token.role = user.role;
+        async jwt({ token, user, account }) {
+            if (user) {
+                token.id = user.id;
+                token.role = user.role;
+            }
             return token;
         },
         async session({ session, token }) {
-            if (session.user) session.user.role = token.role;
+            if (session.user) {
+                (session.user as any).id = token.id;
+                (session.user as any).role = token.role;
+            }
             return session;
         }
     }
