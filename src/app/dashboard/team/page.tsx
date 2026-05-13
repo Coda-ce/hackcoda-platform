@@ -201,7 +201,7 @@ export default function TeamsPage() {
   const teams = getTeamsToDisplay();
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white">Meus Times</h1>
@@ -212,9 +212,9 @@ export default function TeamsPage() {
       <div className="flex gap-2 border-b border-white/10">
         <button
           onClick={() => setActiveTab("my")}
-          className={`px-4 py-2 font-medium transition-colors ${
+          className={`px-4 py-2 transition-colors ${
             activeTab === "my"
-              ? "text-brasil-verde border-b-2 border-brasil-verde"
+              ? "text-brasil-verde border-b-2 border-brasil-verde font-bold"
               : "text-zinc-400 hover:text-white"
           }`}
         >
@@ -222,9 +222,9 @@ export default function TeamsPage() {
         </button>
         <button
           onClick={() => setActiveTab("browse")}
-          className={`px-4 py-2 font-medium transition-colors ${
+          className={`px-4 py-2 transition-colors ${
             activeTab === "browse"
-              ? "text-brasil-verde border-b-2 border-brasil-verde"
+              ? "text-brasil-verde border-b-2 border-brasil-verde font-bold"
               : "text-zinc-400 hover:text-white"
           }`}
         >
@@ -232,9 +232,9 @@ export default function TeamsPage() {
         </button>
         <button
           onClick={() => setActiveTab("create")}
-          className={`px-4 py-2 font-medium transition-colors ${
+          className={`px-4 py-2 transition-colors ${
             activeTab === "create"
-              ? "text-brasil-verde border-b-2 border-brasil-verde"
+              ? "text-brasil-verde border-b-2 border-brasil-verde font-bold"
               : "text-zinc-400 hover:text-white"
           }`}
         >
@@ -253,13 +253,13 @@ export default function TeamsPage() {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit(onCreateTeam)} className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-zinc-300 ml-1">
+                <div className="group">
+                  <label className="text-sm text-zinc-300 ml-1 group-focus-within:text-brasil-verde group-focus-within:font-bold duration-100">
                     Nome do Time
                   </label>
                   <Input
                     type="text"
-                    placeholder="Ex: Team Awesome"
+                    placeholder="Nome do time"
                     {...register("name")}
                   />
                   {errors.name && (
@@ -269,8 +269,8 @@ export default function TeamsPage() {
                   )}
                 </div>
 
-                <div>
-                  <label className="text-sm font-medium text-zinc-300 ml-1">
+                <div className="group">
+                  <label className="text-sm text-zinc-300 ml-1 group-focus-within:text-brasil-verde group-focus-within:font-bold duration-100">
                     Descrição (opcional)
                   </label>
                   <textarea
@@ -325,38 +325,41 @@ export default function TeamsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {teams.map((team) => (
-              <Card key={team.id} className="border-white/10 overflow-hidden">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="text-xl flex items-center gap-2">
-                        <Users size={20} className="text-brasil-verde" />
-                        {team.name}
+              <Card key={team.id} className="border-white/10 overflow-hidden flex flex-col">
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="text-lg flex items-center gap-2 break-words">
+                        <Users size={18} className="text-brasil-verde flex-shrink-0" />
+                        <span className="truncate">{team.name}</span>
                       </CardTitle>
-                      <CardDescription className="mt-2">
-                        Liderado por {team.leader?.name}
+                      <CardDescription className="mt-2 text-xs">
+                        Líder: <span className="font-semibold text-brasil-verde">{team.leader?.name}</span>
                       </CardDescription>
                     </div>
                     {team.isLeader && (
-                      <Crown size={20} className="text-brasil-verde" />
+                      <Crown size={18} className="text-brasil-verde flex-shrink-0" />
                     )}
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  {team.description && (
-                    <p className="text-sm text-zinc-400">{team.description}</p>
+                <CardContent className="space-y-3 flex-grow">
+                  {team.description ? (
+                    <p className="text-sm text-zinc-400 line-clamp-2">{team.description}</p>
+                  ) : (
+                    <p className="text-sm text-zinc-500 italic">Sem descrição</p>
                   )}
-                  <div className="text-xs text-zinc-500">
+                  <div className="text-xs text-zinc-500 pt-2 border-t border-white/10">
                     {team.memberCount || 1} membro{(team.memberCount || 1) > 1 ? "s" : ""}
                   </div>
                 </CardContent>
-                <div className="border-t border-white/10 p-4 flex gap-2">
+                <div className="border-t border-white/10 p-3 flex gap-2">
                   {team.isMember ? (
                     <>
                       <Button
                         variant="outline"
                         onClick={() => router.push(`/dashboard/team/${team.id}`)}
-                        className="flex-1 flex items-center justify-center gap-2"
+                        className="flex-1 flex items-center justify-center gap-1 text-sm"
+                        size="sm"
                       >
                         <Eye size={16} />
                         Ver
@@ -365,7 +368,8 @@ export default function TeamsPage() {
                         <Button
                           variant="outline"
                           onClick={() => handleDeleteTeam(team.id)}
-                          className="flex-1 flex items-center justify-center gap-2 text-red-400 hover:text-red-300 border-red-400/30"
+                          className="flex-1 flex items-center justify-center gap-1 text-sm text-red-400 hover:text-red-300 border-red-400/30"
+                          size="sm"
                         >
                           <Trash2 size={16} />
                           Deletar
@@ -374,7 +378,8 @@ export default function TeamsPage() {
                         <Button
                           variant="outline"
                           onClick={() => handleLeaveTeam(team.id)}
-                          className="flex-1 flex items-center justify-center gap-2 text-red-400 hover:text-red-300 border-red-400/30"
+                          className="flex-1 flex items-center justify-center gap-1 text-sm text-red-400 hover:text-red-300 border-red-400/30"
+                          size="sm"
                         >
                           <LogOut size={16} />
                           Sair
@@ -386,14 +391,16 @@ export default function TeamsPage() {
                       <Button
                         variant="outline"
                         onClick={() => router.push(`/dashboard/team/${team.id}`)}
-                        className="flex-1 flex items-center justify-center gap-2"
+                        className="flex-1 flex items-center justify-center gap-1 text-sm"
+                        size="sm"
                       >
                         <Eye size={16} />
                         Ver
                       </Button>
                       <Button
                         onClick={() => handleJoinTeam(team.id)}
-                        className="flex-1 flex items-center justify-center gap-2"
+                        className="flex-1 flex items-center justify-center gap-1 text-sm"
+                        size="sm"
                       >
                         <Plus size={16} />
                         Entrar
@@ -427,43 +434,46 @@ export default function TeamsPage() {
             </Card>
           ) : (
             myTeams.map((team) => (
-              <Card key={team.id} className="border-white/10 overflow-hidden">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="text-xl flex items-center gap-2">
-                        <Users size={20} className="text-brasil-verde" />
-                        {team.name}
+              <Card key={team.id} className="border-white/10 overflow-hidden flex flex-col">
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="text-lg flex items-center gap-2 break-words">
+                        <Users size={18} className="text-brasil-verde flex-shrink-0" />
+                        <span className="truncate">{team.name}</span>
                       </CardTitle>
                       {team.role === "LEADER" ? (
-                        <div className="flex items-center gap-1 mt-2 text-xs text-brasil-verde">
-                          <Crown size={14} />
+                        <div className="flex items-center gap-1 mt-2 text-xs text-brasil-verde font-semibold">
+                          <Crown size={12} />
                           Você é o líder
                         </div>
                       ) : (
-                        <CardDescription className="mt-2">
-                          Liderado por {team.leader?.name}
+                        <CardDescription className="mt-2 text-xs">
+                          Líder: <span className="font-semibold text-brasil-verde">{team.leader?.name}</span>
                         </CardDescription>
                       )}
                     </div>
                     {team.role === "LEADER" && (
-                      <Crown size={20} className="text-brasil-verde" />
+                      <Crown size={18} className="text-brasil-verde flex-shrink-0" />
                     )}
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  {team.description && (
-                    <p className="text-sm text-zinc-400">{team.description}</p>
+                <CardContent className="space-y-3 flex-grow">
+                  {team.description ? (
+                    <p className="text-sm text-zinc-400 line-clamp-2">{team.description}</p>
+                  ) : (
+                    <p className="text-sm text-zinc-500 italic">Sem descrição</p>
                   )}
-                  <div className="text-xs text-zinc-500">
+                  <div className="text-xs text-zinc-500 pt-2 border-t border-white/10">
                     {team.memberCount || 1} membro{(team.memberCount || 1) > 1 ? "s" : ""}
                   </div>
                 </CardContent>
-                <div className="border-t border-white/10 p-4 space-y-2">
+                <div className="flex items-center gap-4 border-t border-white/10 p-4">
                   <Button
                     variant="outline"
                     onClick={() => router.push(`/dashboard/team/${team.id}`)}
-                    className="w-full flex items-center justify-center gap-2"
+                    className="p-4 w-full flex items-center justify-center gap-2 text-sm"
+                    size="sm"
                   >
                     <Eye size={16} />
                     Ver Detalhes
@@ -472,7 +482,8 @@ export default function TeamsPage() {
                     <Button
                       variant="outline"
                       onClick={() => handleDeleteTeam(team.id)}
-                      className="w-full flex items-center justify-center gap-2 text-red-400 hover:text-red-300 border-red-400/30"
+                      className="w-full flex items-center justify-center gap-2 text-sm text-red-400 hover:text-red-300 border-red-400/30"
+                      size="sm"
                     >
                       <Trash2 size={16} />
                       Deletar Time
@@ -481,7 +492,8 @@ export default function TeamsPage() {
                     <Button
                       variant="outline"
                       onClick={() => handleLeaveTeam(team.id)}
-                      className="w-full flex items-center justify-center gap-2 text-red-400 hover:text-red-300 border-red-400/30"
+                      className="w-full flex items-center justify-center gap-2 text-sm text-red-400 hover:text-red-300 border-red-400/30"
+                      size="sm"
                     >
                       <LogOut size={16} />
                       Sair do Time
