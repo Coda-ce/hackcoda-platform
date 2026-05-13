@@ -150,7 +150,7 @@ export default function TeamDetailPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <button
         onClick={() => router.back()}
         className="flex items-center gap-2 text-brasil-verde hover:text-[#4bcc25] transition-colors"
@@ -171,7 +171,7 @@ export default function TeamDetailPage({ params }: { params: { id: string } }) {
                     {team.name}
                   </CardTitle>
                   <CardDescription className="mt-2">
-                    Liderado por {team.leader?.name}
+                    Líder <span className="font-bold text-brasil-verde">{team.leader?.name}</span>
                   </CardDescription>
                 </div>
                 {isLeader && (

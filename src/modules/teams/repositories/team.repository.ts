@@ -65,6 +65,9 @@ export class TeamRepository {
             leader: {
               select: { id: true, name: true, email: true },
             },
+            _count: {
+              select: { members: true },
+            },
           },
         },
       },

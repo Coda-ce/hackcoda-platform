@@ -34,6 +34,7 @@ export const teamService = {
     const userTeams = await teamRepository.findTeamsByUser(userId);
     return userTeams.map((ut: any) => ({
       ...ut.team,
+      memberCount: ut.team._count?.members || 0,
       role: ut.role,
       isLeader: ut.role === "LEADER",
       isMember: true,
@@ -41,7 +42,11 @@ export const teamService = {
   },
 
   async getTeamsByLeader(leaderId: string) {
-    return await teamRepository.findTeamsByLeader(leaderId);
+    const teams = await teamRepository.findTeamsByLeader(leaderId);
+    return teams.map((team: any) => ({
+      ...team,
+      memberCount: team._count?.members || team.members?.length || 0,
+    }));
   },
 
   async joinTeam(userId: string, teamId: string) {
