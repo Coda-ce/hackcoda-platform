@@ -1,0 +1,38 @@
+name: Solicitar melhoria ou funcionalidade
+description: Propor uma mudança ou nova capacidade no produto
+title: "[feat] "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Descreva o problema ou oportunidade antes da solução — isso ajuda mantenedores e a comunidade a priorizar.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema ou necessidade
+      description: Que dor de usuário, operação ou desenvolvedor isso resolve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposta (solução desejada)
+      description: Como você imagina que isso funcionaria? Pode ser alto nível.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas
+      description: O que mais você avaliou ou por que não fazer nada?
+    validations:
+      required: false
+  - type: textarea
+    id: scope
+    attributes:
+      label: Escopo sugerido
+      description: Módulos (`src/modules/...`), telas ou APIs envolvidas, se souber.
+    validations:
+      required: false
