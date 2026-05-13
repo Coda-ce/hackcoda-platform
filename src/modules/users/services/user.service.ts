@@ -7,7 +7,11 @@ import bcrypt from "bcryptjs";
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async registerUser({ name, email, password }: Prisma.UserCreateInput): Promise<void> {
+  async registerUser({
+    name,
+    email,
+    password,
+  }: Prisma.UserCreateInput): Promise<void> {
     const existingUser = await this.userRepository.findByEmail(email);
 
     if (existingUser) {
@@ -24,6 +28,16 @@ export class UserService {
 
   async getUserByEmail(email: string) {
     const user = await this.userRepository.findByEmail(email);
+
+    if (!user) {
+      throw new ResourceNotFoundException("User");
+    }
+
+    return user;
+  }
+
+  async getUserById(id: string) {
+    const user = await this.userRepository.findById(id);
 
     if (!user) {
       throw new ResourceNotFoundException("User");
