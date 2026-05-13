@@ -6,32 +6,51 @@ import { createTeamSchema } from "@/modules/teams/validators/team.schema";
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
     const { searchParams } = new URL(req.url);
     const action = searchParams.get("action");
     const query = searchParams.get("q");
 
-    if (!session?.user) {
-      return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
+    // Ações que requerem autenticação
+    if (action === "my-teams" || action === "led") {
+      const session = await getServerSession(authOptions);
+
+      if (!session?.user) {
+        return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
+      }
+
+      let userId = (session.user as any).id;
+
+      // Fallback: if id is not in session, try to get from email
+      if (!userId && (session.user as any).email) {
+        const userRepo = new (await import("@/modules/users/repositories/user.repository")).UserRepository(
+          (await import("@/shared/lib/prisma")).prisma
+        );
+        const user = await userRepo.findByEmail((session.user as any).email);
+        userId = user?.id;
+      }
+
+      if (!userId) {
+        return NextResponse.json({ error: "Usuário não identificado" }, { status: 400 });
+      }
+
+      if (action === "my-teams") {
+        const teams = await teamService.getUserTeams(userId);
+        return NextResponse.json(teams);
+      }
+
+      if (action === "led") {
+        const teams = await teamService.getTeamsByLeader(userId);
+        return NextResponse.json(teams);
+      }
     }
 
-    const userId = (session.user as any).id;
-
-    if (action === "my-teams") {
-      const teams = await teamService.getUserTeams(userId);
-      return NextResponse.json(teams);
-    }
-
+    // Ações públicas
     if (action === "search" && query) {
       const teams = await teamService.searchTeams(query);
       return NextResponse.json(teams);
     }
 
-    if (action === "led") {
-      const teams = await teamService.getTeamsByLeader(userId);
-      return NextResponse.json(teams);
-    }
-
+    // Retorna todos os times (público)
     const teams = await teamService.getAllTeams();
     return NextResponse.json(teams);
   } catch (error: any) {

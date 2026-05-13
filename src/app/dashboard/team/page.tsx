@@ -46,11 +46,16 @@ export default function TeamsPage() {
   });
 
   useEffect(() => {
-    if (session?.user?.id) {
+    // Carregar times públicos sempre (não requer auth)
+    loadAllTeams();
+  }, []);
+
+  useEffect(() => {
+    // Carregar meus times quando session está disponível
+    if (session?.user) {
       loadMyTeams();
-      loadAllTeams();
     }
-  }, [session?.user?.id]);
+  }, [session?.user]);
 
   const loadMyTeams = async () => {
     try {
@@ -73,6 +78,8 @@ export default function TeamsPage() {
       if (response.ok) {
         const data = await response.json();
         setAllTeams(data);
+      } else {
+        console.error("Erro ao carregar times:", response.status);
       }
     } catch (error) {
       console.error("Erro ao carregar times:", error);
@@ -181,7 +188,12 @@ export default function TeamsPage() {
   const getTeamsToDisplay = () => {
     if (activeTab === "my") return myTeams;
     if (activeTab === "create") return [];
-    return searchQuery && isSearching ? searchResults : allTeams;
+
+    const teamsToShow = searchQuery && isSearching ? searchResults : allTeams;
+    const myTeamIds = new Set(myTeams.map(t => t.id));
+
+    // Filtrar times que já estou participando
+    return teamsToShow.filter(team => !myTeamIds.has(team.id));
   };
 
   const teams = getTeamsToDisplay();
