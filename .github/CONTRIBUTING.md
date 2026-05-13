@@ -142,4 +142,4 @@ Obrigado por contribuir com o hackcoda.
 
 - [Código de conduta](CODE_OF_CONDUCT.md)
 - [Política de segurança](SECURITY.md)
-- [README](README.md) — visão geral do projeto e como rodar localmente
+- [README](../README.md) — visão geral do projeto e como rodar localmente

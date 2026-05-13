@@ -10,7 +10,7 @@ Plataforma open source para **gestão de hackathons**: times, submissões de pro
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-banco-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Stars](https://img.shields.io/github/stars/Coda-ce/hackcoda-platform?style=social)](https://github.com/Coda-ce/hackcoda-platform)
 
-[Contribuir](CONTRIBUTING.md) · [Código de conduta](CODE_OF_CONDUCT.md) · [Segurança](SECURITY.md) · [Issues](https://github.com/Coda-ce/hackcoda-platform/issues)
+[Contribuir](.github/CONTRIBUTING.md) · [Código de conduta](.github/CODE_OF_CONDUCT.md) · [Segurança](.github/SECURITY.md) · [Issues](https://github.com/Coda-ce/hackcoda-platform/issues)
 
 </div>
 
@@ -122,11 +122,11 @@ Comandos úteis: `npm run lint`, `npm run build`, scripts `db:*` definidos no [`
 
 ## Contribuição
 
-Contribuições são bem-vindas. Leia o [**guia de contribuição**](CONTRIBUTING.md) — lá estão fluxo de branches (`developer`), **Conventional Commits**, escopo de PR vinculado a **issues** e checklist de revisão.
+Contribuições são bem-vindas. Leia o [**guia de contribuição**](.github/CONTRIBUTING.md) — lá estão fluxo de branches (`developer`), **Conventional Commits**, escopo de PR vinculado a **issues** e checklist de revisão.
 
-- [**CONTRIBUTING.md**](CONTRIBUTING.md) — processo técnico e de comunidade  
-- [**CODE_OF_CONDUCT.md**](CODE_OF_CONDUCT.md) — conduta esperada  
-- [**SECURITY.md**](SECURITY.md) — reporte responsável de vulnerabilidades  
+- [**CONTRIBUTING.md**](.github/CONTRIBUTING.md) — processo técnico e de comunidade  
+- [**CODE_OF_CONDUCT.md**](.github/CODE_OF_CONDUCT.md) — conduta esperada  
+- [**SECURITY.md**](.github/SECURITY.md) — reporte responsável de vulnerabilidades  
 
 ## Licença
 
