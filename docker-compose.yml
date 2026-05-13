@@ -3,7 +3,7 @@ version: '3.8'
 services:
   db:
     container_name: hackcoda-postgres
-    image: postgres:alpine
+    image: postgres:16-alpine
     restart: always
     environment:
       POSTGRES_USER: johndoe
