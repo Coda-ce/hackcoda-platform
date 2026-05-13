@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/Card";
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
 import { createTeamSchema } from "@/modules/teams/validators/team.schema";
-import { Users, Plus, Search, Trash2, LogOut, Crown } from "lucide-react";
+import { Users, Plus, Search, Trash2, LogOut, Crown, Eye } from "lucide-react";
 
 interface Team {
   id: string;
@@ -28,6 +29,7 @@ interface Team {
 
 export default function TeamsPage() {
   const { data: session } = useSession();
+  const router = useRouter();
   const [myTeams, setMyTeams] = useState<Team[]>([]);
   const [allTeams, setAllTeams] = useState<Team[]>([]);
   const [searchResults, setSearchResults] = useState<Team[]>([]);
@@ -351,6 +353,14 @@ export default function TeamsPage() {
                 <div className="border-t border-white/10 p-4 flex gap-2">
                   {team.isMember ? (
                     <>
+                      <Button
+                        variant="outline"
+                        onClick={() => router.push(`/dashboard/team/${team.id}`)}
+                        className="flex-1 flex items-center justify-center gap-2"
+                      >
+                        <Eye size={16} />
+                        Ver
+                      </Button>
                       {team.isLeader ? (
                         <Button
                           variant="outline"
@@ -372,13 +382,23 @@ export default function TeamsPage() {
                       )}
                     </>
                   ) : (
-                    <Button
-                      onClick={() => handleJoinTeam(team.id)}
-                      className="flex-1 flex items-center justify-center gap-2"
-                    >
-                      <Plus size={16} />
-                      Entrar
-                    </Button>
+                    <>
+                      <Button
+                        variant="outline"
+                        onClick={() => router.push(`/dashboard/team/${team.id}`)}
+                        className="flex-1 flex items-center justify-center gap-2"
+                      >
+                        <Eye size={16} />
+                        Ver
+                      </Button>
+                      <Button
+                        onClick={() => handleJoinTeam(team.id)}
+                        className="flex-1 flex items-center justify-center gap-2"
+                      >
+                        <Plus size={16} />
+                        Entrar
+                      </Button>
+                    </>
                   )}
                 </div>
               </Card>
@@ -439,7 +459,15 @@ export default function TeamsPage() {
                     {team.memberCount || 1} membro{(team.memberCount || 1) > 1 ? "s" : ""}
                   </div>
                 </CardContent>
-                <div className="border-t border-white/10 p-4">
+                <div className="border-t border-white/10 p-4 space-y-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => router.push(`/dashboard/team/${team.id}`)}
+                    className="w-full flex items-center justify-center gap-2"
+                  >
+                    <Eye size={16} />
+                    Ver Detalhes
+                  </Button>
                   {team.role === "LEADER" ? (
                     <Button
                       variant="outline"

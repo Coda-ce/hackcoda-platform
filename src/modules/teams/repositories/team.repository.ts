@@ -14,7 +14,13 @@ export class TeamRepository {
         leader: {
           select: { id: true, name: true, email: true },
         },
-        members: true,
+        members: {
+          include: {
+            user: {
+              select: { id: true, name: true, email: true },
+            },
+          },
+        },
       },
     });
   }
@@ -39,7 +45,13 @@ export class TeamRepository {
         leader: {
           select: { id: true, name: true, email: true },
         },
-        members: true,
+        members: {
+          include: {
+            user: {
+              select: { id: true, name: true, email: true },
+            },
+          },
+        },
       },
     });
   }
