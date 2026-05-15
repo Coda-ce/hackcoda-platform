@@ -31,4 +31,14 @@ export class UserService {
 
     return user;
   }
+
+  async getUserById(id: string) {
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      throw new ResourceNotFoundException("User");
+    }
+
+    return user;
+  }
 }
