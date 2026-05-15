@@ -13,7 +13,7 @@ export const authService = {
       where: { email: credentials.email },
     });
 
-    if (!user || !user.password) {
+    if (!user || !credentials.password) {
       return null;
     }
 
@@ -38,7 +38,7 @@ export const authService = {
    * Registra um novo usuário
    * @param data
    */
-  async registerUser(data: RegisterData): Promise<AuthUser | null> {
+  async registerUser(data: RegisterData): Promise<AuthUser> {
     const existingUser = await prisma.user.findUnique({
       where: { email: data.email },
     });
