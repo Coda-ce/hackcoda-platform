@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { ResourceNotFoundException } from "@/shared/exceptions/resouce-not-found";
 import { ResourceExistsException } from "@/shared/exceptions/resource-exists";
+import { ResourceNotFoundException } from "@/shared/exceptions/resource-not-found";
 import { UserRepository } from "../repositories/user.repository";
 
 export class UserService {
