@@ -4,14 +4,20 @@ import type { CreateTeamData, Team } from "../types";
 export class TeamRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async create(_data: CreateTeamData & { inviteCode: string }): Promise<Team> {
-    throw new Error("Not implemented: add Team model to Prisma schema");
+  async create(data: CreateTeamData & { inviteCode: string }): Promise<Team> {
+    return this.prisma.team.create({ data });
   }
 
   async findByNameAndHackathon(
-    _name: string,
-    _hackathonId: string,
+    name: string,
+    hackathonId: string,
   ): Promise<Team | null> {
-    throw new Error("Not implemented: add Team model to Prisma schema");
+    return this.prisma.team.findUnique({
+      where: { name_hackathonId: { name, hackathonId } },
+    });
+  }
+
+  async findByInviteCode(inviteCode: string): Promise<Team | null> {
+    return this.prisma.team.findUnique({ where: { inviteCode } });
   }
 }

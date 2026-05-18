@@ -4,14 +4,16 @@ import type { CreateProjectData, Project } from "../projects-types";
 export class ProjectRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async create(_data: CreateProjectData): Promise<Project> {
-    throw new Error("Not implemented: add Project model to Prisma schema");
+  async create(data: CreateProjectData): Promise<Project> {
+    return this.prisma.project.create({ data });
   }
 
   async findByNameAndTeam(
-    _name: string,
-    _teamId: string,
+    name: string,
+    teamId: string,
   ): Promise<Project | null> {
-    throw new Error("Not implemented: add Project model to Prisma schema");
+    return this.prisma.project.findUnique({
+      where: { name_teamId: { name, teamId } },
+    });
   }
 }

@@ -12,9 +12,9 @@ export interface Hackathon {
   rules: string | null;
   bannerUrl: string | null;
   maxTeamSize: number;
-  registrationDeadline: string;
-  startDate: string;
-  endDate: string;
+  registrationDeadline: Date;
+  startDate: Date;
+  endDate: Date;
   status: HackathonStatus;
   createdBy: string;
   createdAt: Date;
