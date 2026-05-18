@@ -1,5 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
-import type { CreateProjectData, Project } from "../projects-types";
+import type { CreateProjectData, Project } from "../types";
 
 export class ProjectRepository {
   constructor(private readonly prisma: PrismaClient) {}

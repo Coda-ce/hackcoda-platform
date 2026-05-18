@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ResourceExistsException } from "@/shared/exceptions/resource-exists";
-import type { Project } from "../../projects-types";
+import type { Project } from "../../types";
 import { ProjectService } from "../project.service";
 
 const mockProject: Project = {

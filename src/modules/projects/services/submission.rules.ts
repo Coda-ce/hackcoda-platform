@@ -1,4 +1,4 @@
-import type { ProjectStatus } from "../projects-types";
+import type { ProjectStatus } from "../types";
 
 export function canSubmitProject(
   projectStatus: ProjectStatus,

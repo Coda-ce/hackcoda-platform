@@ -1,6 +1,6 @@
 import { ResourceExistsException } from "@/shared/exceptions/resource-exists";
-import type { CreateProjectData, Project } from "../projects-types";
 import type { ProjectRepository } from "../repositories/project.repository";
+import type { CreateProjectData, Project } from "../types";
 
 export class ProjectService {
   constructor(private readonly projectRepository: ProjectRepository) {}
