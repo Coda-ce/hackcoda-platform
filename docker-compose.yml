@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: hackcoda-postgres
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: johndoe
+      POSTGRES_PASSWORD: randompassword
+      POSTGRES_DB: hackcoda
+    ports:
+      - "5432:5432"
+    volumes:
+      - hackcoda-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U johndoe -d hackcoda"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - hackcoda-network
+
+  migrate:
+    container_name: hackcoda-migrate
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      DATABASE_URL: postgresql://johndoe:randompassword@db:5432/hackcoda?schema=public
+    command: sh -c "apk add --no-cache openssl && npm install && npx prisma migrate deploy"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - hackcoda-network
+
+  pgadmin:
+    container_name: hackcoda-pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "15432:80"
+    networks:
+      - hackcoda-network
+
+volumes:
+  hackcoda-postgres-data:
+
+networks:
+  hackcoda-network:
+    driver: bridge

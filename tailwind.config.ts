@@ -13,22 +13,22 @@ const config: Config = {
     extend: {
       colors: {
         brasil: {
-            verde: "#5DD62C",   // Verde Protagonista (Ação/Destaque neon)
-            verdeEscuro: "#337418", // Verde escuro (Para fundos e sombras)
-            preto: "#0F0F0F",   // Fundo Imersivo 1
-            cinza: "#202020",   // Fundo Imersivo 2
-            creme: "#F8F8F8",   // Texto e Contrastes Sofisticados
+          verde: "#5DD62C", // Verde Protagonista (Ação/Destaque neon)
+          verdeEscuro: "#337418", // Verde escuro (Para fundos e sombras)
+          preto: "#0F0F0F", // Fundo Imersivo 1
+          cinza: "#202020", // Fundo Imersivo 2
+          creme: "#F8F8F8", // Texto e Contrastes Sofisticados
         },
       },
       keyframes: {
         moveBg: {
-          '0%': { backgroundPosition: '0% 50%' },
-          '50%': { backgroundPosition: '100% 50%' },
-          '100%': { backgroundPosition: '0% 50%' },
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
         },
       },
       animation: {
-        'gradient-x': 'moveBg 35s ease infinite',
+        "gradient-x": "moveBg 35s ease infinite",
       },
     },
   },

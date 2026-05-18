@@ -86,9 +86,45 @@ src/
 ### Pré-requisitos
 
 - **Node.js** 18 ou superior
-- **PostgreSQL** acessível localmente ou via URL de conexão
+- **PostgreSQL** acessível localmente ou via URL de conexão — ou [Docker](https://www.docker.com/) para subir o banco com `docker-compose`
 
-### Passos
+### Subindo o banco com Docker (recomendado)
+
+Se preferir não instalar o PostgreSQL manualmente, o projeto inclui um `docker-compose.yml` que sobe o banco e executa as migrações automaticamente.
+
+1. **Clone o repositório**
+
+   ```bash
+   git clone https://github.com/Coda-ce/hackcoda-platform.git
+   cd hackcoda-platform
+   ```
+
+2. **Variáveis de ambiente**  
+   Copie `.env.example` para `.env`. A `DATABASE_URL` padrão já está configurada para o banco do Docker:
+
+   ```env
+   DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/hackcoda?schema=public"
+   ```
+
+3. **Banco e migrações**
+
+   ```bash
+   docker compose up -d
+   ```
+
+   O serviço `migrate` roda `prisma migrate deploy` automaticamente assim que o banco estiver pronto e encerra em seguida.
+
+4. **Dependências e servidor**
+
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+Para parar os containers: `docker compose down`  
+Para remover os dados do banco junto: `docker compose down -v`
+
+### Instalação manual (sem Docker)
 
 1. **Clone o repositório**
 
@@ -104,7 +140,7 @@ src/
    ```
 
 3. **Variáveis de ambiente**  
-   Copie `.env.example` para `.env` e preencha os valores necessários.
+   Copie `.env.example` para `.env` e preencha as variáveis com os dados do seu banco.
 
 4. **Banco de dados**
 

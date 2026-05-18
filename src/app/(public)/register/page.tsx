@@ -1,14 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/shared/components/ui/Card";
-import { Input } from "@/shared/components/ui/Input";
 import { Button } from "@/shared/components/ui/Button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/Card";
+import { Input } from "@/shared/components/ui/Input";
 
 const registerSchema = z.object({
   name: z.string().min(2, "O nome deve ter no mínimo 2 caracteres"),
@@ -21,8 +28,9 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 export default function RegisterPage() {
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState("");
+  const [emailTaken, setEmailTaken] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const {
     register,
     handleSubmit,
@@ -33,11 +41,12 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormValues) => {
     setErrorMsg("");
+    setEmailTaken(false);
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
@@ -45,13 +54,15 @@ export default function RegisterPage() {
       if (response.ok) {
         router.push("/login?registered=true");
         router.refresh();
+      } else if (response.status === 409) {
+        setEmailTaken(true);
       } else {
         const errorData = await response.json();
-        setErrorMsg(`Erro: ${errorData.message || 'Falha ao registrar.'}`);
+        setErrorMsg(errorData.message || "Falha ao registrar.");
       }
     } catch (error) {
-      console.error('Erro ao registrar:', error);
-      setErrorMsg('Erro interno de conexão.');
+      console.error("Erro ao registrar:", error);
+      setErrorMsg("Erro interno de conexão.");
     }
   };
 
@@ -77,11 +88,7 @@ export default function RegisterPage() {
               <label className="text-sm font-medium text-zinc-300 ml-1">
                 Nome completo
               </label>
-              <Input
-                type="text"
-                placeholder="Seu nome"
-                {...register("name")}
-              />
+              <Input type="text" placeholder="Seu nome" {...register("name")} />
               {errors.name && (
                 <p className="text-xs text-red-400 font-medium ml-1">
                   {errors.name.message}
@@ -129,6 +136,20 @@ export default function RegisterPage() {
                 </p>
               )}
             </div>
+
+            {emailTaken && (
+              <div className="p-3 bg-amber-900/30 border border-amber-500/50 rounded-xl flex items-center justify-between gap-3">
+                <p className="text-amber-300 text-sm font-medium">
+                  Este e-mail já possui uma conta.
+                </p>
+                <a
+                  href="/login"
+                  className="text-brasil-verde text-sm font-semibold hover:text-[#4bcc25] whitespace-nowrap transition-colors"
+                >
+                  Fazer login →
+                </a>
+              </div>
+            )}
 
             {errorMsg && (
               <div className="p-3 bg-red-900/30 border border-red-500/50 text-red-400 text-sm font-medium rounded-xl">
