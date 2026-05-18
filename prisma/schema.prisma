@@ -12,19 +12,6 @@ enum Role {
   ADMIN
 }
 
-enum HackathonStatus {
-  DRAFT
-  PUBLISHED
-  ACTIVE
-  FINISHED
-  CANCELLED
-}
-
-enum ProjectStatus {
-  DRAFT
-  SUBMITTED
-}
-
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
@@ -36,77 +23,4 @@ model User {
   updatedAt DateTime @updatedAt
 
   @@map("users")
-}
-
-model Hackathon {
-  id                   String          @id @default(uuid())
-  title                String          @unique
-  description          String
-  rules                String?
-  bannerUrl            String?
-  maxTeamSize          Int
-  registrationDeadline DateTime
-  startDate            DateTime
-  endDate              DateTime
-  status               HackathonStatus @default(DRAFT)
-  createdBy            String
-  createdAt            DateTime        @default(now())
-  updatedAt            DateTime        @updatedAt
-
-  teams    Team[]
-  rankings Ranking[]
-
-  @@map("hackathons")
-}
-
-model Team {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  hackathonId String
-  leaderId    String
-  inviteCode  String   @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  hackathon Hackathon @relation(fields: [hackathonId], references: [id])
-  projects  Project[]
-
-  @@unique([name, hackathonId])
-  @@map("teams")
-}
-
-model Project {
-  id          String        @id @default(uuid())
-  name        String
-  description String
-  teamId      String
-  repoUrl     String?
-  demoUrl     String?
-  techStack   String[]
-  status      ProjectStatus @default(DRAFT)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
-  team     Team      @relation(fields: [teamId], references: [id])
-  rankings Ranking[]
-
-  @@unique([name, teamId])
-  @@map("projects")
-}
-
-model Ranking {
-  id          String    @id @default(uuid())
-  projectId   String
-  hackathonId String
-  score       Float     @default(0)
-  position    Int
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  project   Project   @relation(fields: [projectId], references: [id])
-  hackathon Hackathon @relation(fields: [hackathonId], references: [id])
-
-  @@unique([projectId, hackathonId])
-  @@map("rankings")
 }
