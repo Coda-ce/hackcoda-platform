@@ -1,0 +1,54 @@
+name: Reportar bug
+description: Comportamento incorreto, erro ou regressão
+title: "[bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por ajudar a melhorar o hackcoda. Prefira uma issue por problema bem delimitado.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Resumo
+      description: Em uma ou duas frases, o que está errado?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passos para reproduzir
+      description: Lista numerada — quanto mais objetivo, mais rápido reproduzimos.
+      placeholder: |
+        1. …
+        2. …
+        3. …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamento esperado
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Comportamento atual
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Ambiente
+      description: SO, versão do Node (`node -v`), navegador, branch/commit se souber.
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs ou stack trace
+      description: Cole trechos relevantes (sem segredos ou tokens).
+    validations:
+      required: false
