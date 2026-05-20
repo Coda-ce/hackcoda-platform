@@ -1,148 +1,177 @@
+<div align="center">
+
 # hackcoda
 
-O hackcoda é um projeto open-source desenvolvido pela comunidade Coda.ce com o objetivo de centralizar a gestão de hackathons: inscrição de times, submissão de projetos e divulgação de resultados.
+Plataforma open source para **gestão de hackathons**: times, submissões de projetos e divulgação de resultados — desenvolvida pela comunidade **Coda.ce**.
 
-O projeto utiliza Next.js como solução fullstack — frontend, backend e API em um único repositório, com um único deploy.
+[![Licença MIT](https://img.shields.io/github/license/Coda-ce/hackcoda-platform?label=Licen%C3%A7a)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-banco-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Stars](https://img.shields.io/github/stars/Coda-ce/hackcoda-platform?style=social)](https://github.com/Coda-ce/hackcoda-platform)
 
-## Visão Geral
+[Contribuir](.github/CONTRIBUTING.md) · [Código de conduta](.github/CODE_OF_CONDUCT.md) · [Segurança](.github/SECURITY.md) · [Issues](https://github.com/Coda-ce/hackcoda-platform/issues)
 
-- Status: Em planejamento (MVP)
-- Tipo: Open-Source (Web)
-- Stack: Next.js 14 Fullstack (monolito modular)
-- Licença: MIT
+</div>
 
-## Objetivos Estratégicos
+---
 
-- Criar uma plataforma web completa para gestão de hackathons da comunidade Coda.ce.
-- Ser open-source e aceitar contribuições de membros com qualquer nível de experiência.
-- Integrar-se com as ferramentas já existentes da comunidade (bilheteria, site).
-- Servir como projeto vitrine da Coda.ce no GitHub.
-- Manter uma arquitetura modular que qualquer desenvolvedor Next.js consiga entender e contribuir.
+## Sobre o projeto
 
-## Arquitetura Funcional (Módulos)
+O **hackcoda** centraliza o ciclo de um hackathon em um único repositório **Next.js fullstack** (interface, API e deploy unificados), com arquitetura **modular** para facilitar contribuições em qualquer nível.
 
-O sistema é estruturado em módulos independentes dentro do diretório src/modules:
+| | |
+| --- | --- |
+| **Status** | MVP em evolução |
+| **Tipo** | Aplicação web open source |
+| **Licença** | [MIT](LICENSE) |
 
-- Módulo de Autenticação (NextAuth): Registro, Login, Sessão e Controle de acesso por role.
-- Módulo de Hackathons: CRUD de hackathon, alteração de status, página pública e countdown.
-- Módulo de Times: Criar time, gerenciar membros, convites e inscrição.
-- Módulo de Projetos: Submissão, upload de screenshot e vitrine pública.
-- Módulo de Ranking: Definição de vencedores e resultados.
-- Módulo Administrativo: Gestão do ciclo de vida do evento.
+### Objetivos
 
-## Estrutura de Pastas
+- Plataforma completa para hackathons da comunidade Coda.ce.
+- Base de código acessível a quem está começando e a quem já domina Next.js.
+- Integração futura com ferramentas da comunidade (bilheteria, site institucional).
+- Projeto vitrine da Coda.ce no ecossistema open source.
 
-O projeto segue uma estrutura de monolito modular para facilitar a manutenção e escalabilidade:
+## Funcionalidades (visão por módulos)
+
+- **Autenticação** — registro, sessão e papéis (NextAuth).
+- **Hackathons** — CRUD, status do evento, página pública e countdown.
+- **Times** — criação, membros, convites e inscrição no evento.
+- **Projetos** — submissão, mídia e vitrine pública.
+- **Ranking** — vencedores e publicação de resultados.
+- **Admin** — operação do ciclo de vida do hackathon.
+
+## Arquitetura
+
+O código é organizado como **monólito modular** em `src/modules`, com limites claros entre domínios.
 
 ```text
 src/
-├── app/              # Rotas e Páginas (Next.js App Router)
-├── core/             # Configurações globais e integrações (Auth, DB)
-├── modules/          # Módulos de negócio independentes
-│   ├── auth/         # Lógica de autenticação e usuários
-│   ├── hackathons/   # Gestão de eventos e ciclos de vida
-│   ├── teams/        # Gestão de times e membros
-│   ├── projects/     # Submissões e vitrine de projetos
-│   └── ranking/      # Resultados e classificações
-├── shared/           # Recursos compartilhados entre módulos
-│   ├── components/   # Componentes de UI genéricos
-│   ├── exceptions/   # Classes de erro customizadas
-│   └── validators/   # Schemas de validação globais
-└── prisma/           # Schema do banco de dados e migrações
+├── app/              # Rotas e páginas (App Router)
+├── core/             # Configurações globais (Auth, DB, integrações)
+├── modules/          # Domínios de negócio
+│   ├── auth/
+│   ├── hackathons/
+│   ├── teams/
+│   ├── projects/
+│   └── ranking/
+├── shared/           # UI, validadores e utilitários compartilhados
+│   ├── components/
+│   ├── exceptions/
+│   └── validators/
+└── prisma/           # Schema e migrações
 ```
 
-## MVP - Produto Mínimo Viável
+### Regras de negócio (MVP)
 
-### Fluxos do Sistema
+- Um usuário participa de **um time por hackathon**.
+- Apenas o **líder** do time submete o projeto.
+- Submissão permitida apenas com status do evento **`IN_PROGRESS`**.
+- **Um projeto por time** por hackathon.
 
-- Usuário: Cadastro -> Cria ou entra em um time -> Se inscreve no hackathon -> Desenvolve -> Submete -> Aguarda resultado.
-- Admin: Cria hackathon -> Acompanha inscrições -> Encerra submissões -> Define vencedores -> Publica resultado (Ranking).
+## Stack
 
-### Regras de Negócio principais
+| Camada | Tecnologia |
+| --- | --- |
+| Framework | Next.js 14 (App Router) |
+| Linguagem | TypeScript |
+| Estilo | Tailwind CSS |
+| Dados | Prisma + PostgreSQL |
+| Auth | NextAuth.js |
+| UI / motion | Radix UI, Lucide, Framer Motion |
 
-- Um usuário só pode estar em um time por hackathon.
-- Apenas o líder do time pode submeter o projeto.
-- Submissão só é permitida enquanto o hackathon está com status 'IN_PROGRESS'.
-- Cada time pode submeter apenas um projeto por hackathon.
-
-## Stack Tecnológica
-
-- Framework: Next.js 14 (App Router)
-- Linguagem: TypeScript
-- Estilização: Tailwind CSS
-- ORM: Prisma (PostgreSQL)
-- Autenticação: NextAuth.js
-- Animações: Framer Motion
-- UI Components: Radix UI / Lucide React
-
-## Como Começar
+## Como executar localmente
 
 ### Pré-requisitos
 
-- Node.js (v18+)
-- Banco de dados PostgreSQL
+- **Node.js** 18 ou superior
+- **PostgreSQL** acessível localmente ou via URL de conexão — ou [Docker](https://www.docker.com/) para subir o banco com `docker-compose`
 
-### Subindo o banco com Docker (recomendado para desenvolvimento local)
+### Subindo o banco com Docker (recomendado)
 
 Se preferir não instalar o PostgreSQL manualmente, o projeto inclui um `docker-compose.yml` que sobe o banco e executa as migrações automaticamente.
 
-**Pré-requisito:** [Docker](https://www.docker.com/) instalado.
+1. **Clone o repositório**
 
-1. Clone o repositório:
    ```bash
-   git clone https://github.com/codace/hackcoda-platform.git
+   git clone https://github.com/Coda-ce/hackcoda-platform.git
+   cd hackcoda-platform
    ```
 
-2. Configure o ambiente:
-   Copie o arquivo `.env.example` para `.env`. A `DATABASE_URL` padrão já está configurada para o banco do Docker:
-   ```
+2. **Variáveis de ambiente**  
+   Copie `.env.example` para `.env`. A `DATABASE_URL` padrão já está configurada para o banco do Docker:
+
+   ```env
    DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/hackcoda?schema=public"
    ```
 
-3. Suba o banco e execute as migrações:
+3. **Banco e migrações**
+
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
+
    O serviço `migrate` roda `prisma migrate deploy` automaticamente assim que o banco estiver pronto e encerra em seguida.
 
-4. Instale as dependências e inicie o projeto:
+4. **Dependências e servidor**
+
    ```bash
    npm install
    npm run dev
    ```
 
-Para parar os containers: `docker-compose down`
-Para remover os dados do banco junto: `docker-compose down -v`
+Para parar os containers: `docker compose down`  
+Para remover os dados do banco junto: `docker compose down -v`
 
 ### Instalação manual (sem Docker)
 
-1. Clone o repositório:
+1. **Clone o repositório**
+
    ```bash
-   git clone https://github.com/codace/hackcoda-platform.git
+   git clone https://github.com/Coda-ce/hackcoda-platform.git
+   cd hackcoda-platform
    ```
 
-2. Instale as dependências:
+2. **Instale dependências**
+
    ```bash
    npm install
    ```
 
-3. Configure o ambiente:
-   Copie o arquivo `.env.example` para `.env` e preencha as variáveis com os dados do seu banco.
+3. **Variáveis de ambiente**  
+   Copie `.env.example` para `.env` e preencha as variáveis com os dados do seu banco.
 
-4. Prepare o banco de dados:
+4. **Banco de dados**
+
    ```bash
    npx prisma migrate dev
    ```
 
-5. Inicie o projeto:
+5. **Servidor de desenvolvimento**
+
    ```bash
    npm run dev
    ```
 
+Comandos úteis: `npm run lint`, `npm run build`, scripts `db:*` definidos no [`package.json`](package.json).
+
 ## Contribuição
 
-Consulte o arquivo [CONTRIBUTING.md](.github/CONTRIBUTING.md) para entender como você pode ajudar no desenvolvimento do hackcoda.
+Contribuições são bem-vindas. Leia o [**guia de contribuição**](.github/CONTRIBUTING.md) — lá estão fluxo de branches (`developer`), **Conventional Commits**, escopo de PR vinculado a **issues** e checklist de revisão.
+
+- [**CONTRIBUTING.md**](.github/CONTRIBUTING.md) — processo técnico e de comunidade  
+- [**CODE_OF_CONDUCT.md**](.github/CODE_OF_CONDUCT.md) — conduta esperada  
+- [**SECURITY.md**](.github/SECURITY.md) — reporte responsável de vulnerabilidades  
 
 ## Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Distribuído sob a licença **MIT**. Consulte [LICENSE](LICENSE).
+
+---
+
+<div align="center">
+
+**Coda.ce** · [hackcoda-platform no GitHub](https://github.com/Coda-ce/hackcoda-platform)
+
+</div>
